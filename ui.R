@@ -24,7 +24,7 @@ shinyUI(fluidPage(
                   label = "Confidence level (%)",
                   choices = rev(c(50, 80, 90, 95, 99, 99.9)),
                   selected = 95),
-      tags$a(href = "./dat/Supplementary Table 1.xlsx", "Download all credible variants")
+      tags$a(href = "http://biorxiv.org/content/early/2015/10/20/028688", "Manuscript and data available at bioRxiv")
 #      hr(),
 #      checkboxInput(inputId = "weight",
 #                    label =strong("Customize weight"),

@@ -100,7 +100,7 @@ plot_region <- function(choice, all_snp, all_gene, region){
     text(5,5, "Please select a valid region")
     return()
   }
-  
+  par(mar=c(5,0,1,5))
   result <- getAssigment(i, all_snp, all_gene, region)
   
   if(dim(result$gene)[1]>0){
@@ -110,7 +110,8 @@ plot_region <- function(choice, all_snp, all_gene, region){
     gene <- gene[with(gene, order(start)), ]
     gene$keep <- gene$name %in% result$result
     plot(0,0, xlim=range(result$region$start, result$region$end), ylim=c(-10, length(gene$name)+1), type="n", axes=F,  xlab=paste("Chromosome", result$region$chr , "(Mb)"), ylab="", main=paste(sep="", "HD", i))
-  
+#    rect(result$region$start, -10, result$region$end, 0 , col="gray90", border=NA)
+
     #plot gene
     y <- seq_along(gene$name) 
     col <- rep("gray", length(gene$name))
@@ -137,9 +138,7 @@ plot_region <- function(choice, all_snp, all_gene, region){
     
   }
 #  text(apply(cbind(pmax(gene$start, result$region$start), pmin(gene$end, result$region$end)), 1,mean), y+1, gene$name, col=col)
-  
-  
-  
+    
     ii_sel <- gene$start>  result$region$start
     if(sum(ii_sel)>0){
     text(pmax(gene$start, result$region$start)[ii_sel], y[ii_sel], adj=1.1, gene$name[ii_sel], col=col[ii_sel])
@@ -149,12 +148,12 @@ plot_region <- function(choice, all_snp, all_gene, region){
   }
   }else{
     plot(0,0, xlim=range(result$region$start, result$region$end), ylim=c(-10, 1), type="n", axes=F,  xlab=paste("Chromosome", result$region$chr , "(Mb)"), ylab="", main=paste(sep="", "HD", i))
+#    rect(result$region$start, -10, result$region$end, 0 , col="gray90", border=NA)
   }
-  
 
   #plot SNPs
   snp <- result$snp
-  col <- rep("gray20", length(snp$pos))
+  col <- rep("#808080", length(snp$pos))
   col[snp$eQTL !=""] <- "blue"
   col[snp$Roadmap !=""] <- "green"
   col[snp$TFBS !=""] <- "orange"
@@ -168,15 +167,16 @@ plot_region <- function(choice, all_snp, all_gene, region){
   
   temp <- paste(sep="", as.integer(as.factor(result$snp$signal)), "-", as.character(result$snp$trait.reassigned), "(", sprintf(fmt="%.1f", result$snp$p_multi) ,")")
   temp <- tapply(temp, y_snp, function(x){x[1]})
-  axis(4, at=names(temp), labels = temp, tick=F, las=2, line=-5)
+  axis(4, at=names(temp), labels = temp, tick=F, las=2, line=-1)
   abline(h=0, col="gray", lty="dotted")
   temp <- tapply(snp$position, y_snp, range)
-  rect(do.call("rbind", temp)[,1], as.integer(names(temp))-0.1, do.call("rbind", temp)[,2], as.integer(names(temp))+0.1, col="gray20", border=NA)
+  
+  rect(do.call("rbind", temp)[,1] -50000, as.integer(names(temp))-0.3, do.call("rbind", temp)[,2]+50000, as.integer(names(temp))+0.3, col="gray95", border="black", lty = "dotted")
   
   len <- exp(snp$P_mean_95) * 0.15 
   segments(snp$position, y_snp-len, snp$position, y_snp+len, lwd=3, col=col)
-  
-  mtext("Signal-trait\n(-log10P)", 4, line=-4, at=0.5, las=1)  
+
+  mtext("Signal-Trait\n(-log10P)", 4, line=0, at=1, las=1)  
 }
 
 plot_table <- function(choice, all_snp, all_gene, region){
@@ -257,7 +257,7 @@ printLegend <- function(choice){
     tags$div(style="width:14%", class="legend", "Epigenetic"), 
     tags$div(style="width: 1%", class="legend", span(class="bar", style = "background-color:blue")),
     tags$div(style="width:14%", class="legend", "eQTL"), 
-    tags$div(style="width: 1%", class="legend", span(class="bar", style = "background-color:gray;")),
+    tags$div(style="width: 1%", class="legend", span(class="bar", style = "background-color:#808080;")),
     tags$div(style="width:14%", style="clear:right", class="legend", "No_function")
   )
   }
@@ -265,4 +265,3 @@ printLegend <- function(choice){
   ret
   
 }
-

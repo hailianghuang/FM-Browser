@@ -46,8 +46,8 @@ getAssigment <- function(i, all_snp, all_gene, region){
   
   result <- unique(result)
   if(!is.null(coding_hit)){
-    result_coding <- colnames(coding_hit)[apply(coding_hit, 2, max) > 0.1]
-    if(length(result)<=5 & length(result_coding)==1){
+    result_coding <- colnames(coding_hit)[apply(coding_hit, 2, max) > 0.5]
+    if(length(result)<=999 & length(result_coding)==1){
       result <- result_coding
     }
   }

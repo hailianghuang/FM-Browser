@@ -10,7 +10,7 @@ table, th, td {
                     }
                     .legend {
                       float:left; 
-                      height=36px; 
+                      height:36px; 
                       line-height: 36px;
                       vertical-align:middle;
                       padding:5px;
@@ -27,7 +27,10 @@ table, th, td {
   
   titlePanel("International IBD Genetics Consortium Fine-mapping project"),
   
-  sidebarLayout(
+  tags$div(id="input_container", 
+           
+    sidebarLayout(
+             
     sidebarPanel(
 
       selectInput("HD", 
@@ -42,7 +45,7 @@ table, th, td {
                   min = 0, max = 100, value =50),
       tags$a(href = "http://biorxiv.org/content/early/2015/10/20/028688", "Manuscript and results (bioRxiv)")
     , width = 3),
-    
+    # load Javascript snippet to parse the query string.
     mainPanel(
       tabsetPanel(
         tabPanel("Regional plot",   plotOutput("plot", click = "plot_click", brush = "plot_brush"), uiOutput("legend"), tags$div(tableOutput("info"))), 
@@ -50,5 +53,10 @@ table, th, td {
         tabPanel("Region list", dataTableOutput("all_region"))
       )
     , width=9)
+    
+    ),
+    singleton(tags$script(type="text/javascript", src="js/parse_input.js"))
+    
   )
+  
 ))

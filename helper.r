@@ -67,7 +67,7 @@ plotSNP <- function(plot_click, plot_brush, choice, all_snp, all_gene, region){
   }
   
   result <- getAssigment(i, all_snp, all_gene, region)
-  result <- subset(result$snp, select=c("variant", "signal", "size", "trait.reassigned", "position", "exp_freq_a1", "P_mean_95","A0", "A1", "logOR_CD", "logOR_UC", "Coding", "TFBS", "Roadmap", "eQTL"))
+  result <- subset(result$snp, select=c("variant", "signal", "size", "trait", "position", "exp_freq_a1", "P_mean_95","A0", "A1", "logOR_CD", "logOR_UC", "Coding", "TFBS", "Roadmap", "eQTL"))
   
   names(result) <- c("variant", "signal", "size", "trait", "position", "AF", "prob","A0", "A1", "logOR_CD", "logOR_UC", "coding", "TFBS", "roadmap", "eQTL")
   
@@ -165,7 +165,7 @@ plot_region <- function(choice, all_snp, all_gene, region){
   
   #  axis(2, at=y_snp, labels =as.integer(as.factor(result$snp$signal)), tick=F, line=-2)
   
-  temp <- paste(sep="", as.integer(as.factor(result$snp$signal)), "-", as.character(result$snp$trait.reassigned), "(", sprintf(fmt="%.1f", result$snp$p_multi) ,")")
+  temp <- paste(sep="", as.integer(as.factor(result$snp$signal)), "-", as.character(result$snp$trait), "(", sprintf(fmt="%.1f", result$snp$p_multi) ,")")
   temp <- tapply(temp, y_snp, function(x){x[1]})
   axis(4, at=names(temp), labels = temp, tick=F, las=2, line=-1)
   abline(h=0, col="gray", lty="dotted")
